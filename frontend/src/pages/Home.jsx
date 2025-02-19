@@ -10,18 +10,21 @@ export const Home = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const fetchBooks = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/v1/books");
+      const data = await res.json();
+      setBooks(data.books);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
-    axios
-      .get("http://localhost:5000/api/v1/books")
-      .then((res) => {
-        setBooks(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+    fetchBooks();
   }, []);
 
   return (
@@ -50,7 +53,7 @@ export const Home = () => {
             </tr>
           </thead>
           <tbody>
-            {books.map((book, index) => {
+            {books.map((book, index) => (
               <tr key={book._id} className="h-8">
                 <td className="border border-slate-700 rounded-md text-center">
                   {index + 1}
@@ -64,8 +67,27 @@ export const Home = () => {
                 <td className="border border-slate-700 rounded-md text-center">
                   {book.publishYear}
                 </td>
-              </tr>;
-            })}
+                <td className="border border-slate-700 rounded-md text-center">
+                  <div className="flex justify-around items-center">
+                    <Link to={`/books/details/${book._id}`}>
+                      <p className="text-xl text-green-800 transition-[0.3s] hover:bg-green-300 rounded-md px-4">
+                        Info
+                      </p>
+                    </Link>
+                    <Link to={`/books/edit/${book._id}`}>
+                      <p className="text-xl text-yellow-600 transition-[0.3s] hover:bg-yellow-300 rounded-md px-4">
+                        Edit
+                      </p>
+                    </Link>
+                    <Link to={`/books/delete/${book._id}`}>
+                      <p className="text-xl text-red-800 transition-[0.3s] hover:bg-red-300 rounded-md px-4">
+                        Delete
+                      </p>
+                    </Link>
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       )}
