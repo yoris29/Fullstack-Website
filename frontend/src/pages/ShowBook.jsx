@@ -10,7 +10,7 @@ export const ShowBook = () => {
 
   const fetchBook = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/v1/books/${id}`);
+      const res = await fetch(`${import.meta.env.VITE_APP_PATH}/${id}`);
       const data = await res.json();
       setBook(data.book);
       setLoading(false);

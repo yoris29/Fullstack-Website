@@ -20,7 +20,7 @@ export const CreateBook = () => {
     setLoading(true);
 
     axios
-      .post("http://localhost:5000/api/v1/books", data)
+      .post(import.meta.env.VITE_APP_PATH, data)
       .then(() => {
         setLoading(false);
         navigate("/");
@@ -34,7 +34,7 @@ export const CreateBook = () => {
   return (
     <div className="p-4">
       <div className="flex items-center justify-start">
-        <BackButton />
+        <BackButton destination="/" />
         <h1 className="text-3xl my-4">Create Book</h1>
       </div>
 
