@@ -3,6 +3,7 @@ import { BackButton } from "../components/BackButton";
 import { Spinner } from "../components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { useSnackbar } from "notistack";
 
 export const EditBook = () => {
   const [title, setTitle] = useState("");
@@ -11,6 +12,7 @@ export const EditBook = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
+  const { enqueueSnackbar } = useSnackbar();
 
   const fetchBook = async () => {
     try {
@@ -43,10 +45,12 @@ export const EditBook = () => {
       .put(`${import.meta.env.VITE_APP_PATH}/${id}`, data)
       .then(() => {
         setLoading(false);
+        enqueueSnackbar("Book Edited Successfully!", { variant: "success" });
         navigate("/");
       })
       .catch((err) => {
         setLoading(false);
+        enqueueSnackbar("An Error Happened", { variant: "error" });
         console.log(err);
       });
   };

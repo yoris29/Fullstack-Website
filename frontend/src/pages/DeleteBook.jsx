@@ -3,11 +3,13 @@ import axios from "axios";
 import { Spinner } from "../components/Spinner";
 import BackButton from "../components/BackButton";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSnackbar } from "notistack";
 
 export const DeleteBook = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
+  const { enqueueSnackbar } = useSnackbar();
 
   const deleteBook = () => {
     setLoading(true);
@@ -15,10 +17,12 @@ export const DeleteBook = () => {
       .delete(`${import.meta.env.VITE_APP_PATH}/${id}`)
       .then(() => {
         setLoading(false);
+        enqueueSnackbar("Book Deleted Successfully!", { variant: "success" });
         navigate("/");
       })
       .catch((err) => {
         setLoading(false);
+        enqueueSnackbar("An error happened", { variant: "error" });
         console.log(err);
       });
   };
